@@ -9,75 +9,91 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var cardCount = 3
-    let emojis = ["🦋", "🪲", "🐝", "🐞", "🕷️", "🪰", "🐜", "🪳", "🦂"]
+    // state properties
+    @State var currentEmojis = ["🦋", "🪲", "🐝", "🐞", "🕷️", "🪰", "🐜", "🪳", "🦂"] + ["🦋", "🪲", "🐝", "🐞", "🕷️", "🪰", "🐜", "🪳", "🦂"].shuffled()
     
+    // variables, theme arrays
     let insects = ["🦋", "🪲", "🐝", "🐞", "🕷️", "🪰", "🐜", "🪳", "🦂"]
     let architecture = ["🏯", "⛩️", "🏛️", "🗼", "🏢", "🕌", "🏠", "🛖", "🛕"]
     let food = ["🥑", "🥦", "🫐", "🥐", "🍖", "🥩", "🍰", "🫛", "🍉"]
     
+    // main/body view
     var body: some View {
         VStack{
-            Text("MEMORIZE!")
-                .font(.headline)
+            Spacer()
+            Text("MEMORIZE!").font(.headline)
             Spacer()
             cards
             Spacer()
-            cardCountAdjusters
+            toolBar
         }
-        
     }
     
+    //card grid view
     var cards : some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))])  {
-            ForEach(0..<cardCount, id: \.self){ index in
-                CardView(content: emojis[index])
-                    .aspectRatio(1/1, contentMode: .fit)
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))],
+                      spacing: 10)  {
+                ForEach(currentEmojis.indices, id: \.self){ index in
+                    CardView(content: currentEmojis[index])
+                        .aspectRatio(1/1, contentMode: .fit)
+                }
             }
+            .padding()
         }
-        .padding()
     }
     
-    var cardCountAdjusters : some View {
+    // toolbar view
+    var toolBar : some View {
         HStack{
-            cardAdder
             Spacer()
             HStack{
-                themeSwitcher
-                themeSwitcher
-                themeSwitcher
+                insectSwitcher
+                architectureSwitcher
+                foodSwitcher
             }
             Spacer()
-            cardRemover
         }
         .imageScale(.large)
         .padding()
     }
     
-    func cardCountAdjuster(by offset : Int, symbol : String ) -> some View{
-        Button(action:{cardCount += offset},label:{Image(systemName: symbol)})
-            .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
+    //theme switcher function
+    func themeSwitcher(theme: [String], symbol: String, description: String) -> some View {
+        HStack{
+            VStack{
+                Button(action: {
+                    currentEmojis = (theme + theme).shuffled()
+                }, label: {
+                    Image(systemName: symbol)
+                })
+                Text(description).font(.caption)
+            }
+        }
     }
     
-    var cardRemover : some View {
-        cardCountAdjuster(by: -1, symbol: "minus.circle")
+    var insectSwitcher: some View {
+        themeSwitcher(theme: insects, symbol: "ant", description: "insects")
     }
     
-    var cardAdder : some View {
-        cardCountAdjuster(by: 1, symbol: "plus.circle")
+    var architectureSwitcher: some View {
+        themeSwitcher(theme: architecture, symbol: "building.2", description: "architecture")
     }
     
-    var themeSwitcher : some View {
-        Button(action: {}, label: {Image(systemName: "questionmark")})
-            .padding()
+    var foodSwitcher: some View {
+        themeSwitcher(theme: food, symbol: "fork.knife", description: "food")
     }
 }
 
 struct CardView: View {
-   
-    @State var isFaceUp = true
+    
+    // state properties
+    @State var isFaceUp = false
+    
+    // variables
     var content = "🦋"
     
+    // main/body view
     var body: some View {
         ZStack  {
             let base = RoundedRectangle(cornerRadius: 30)
@@ -92,37 +108,7 @@ struct CardView: View {
             isFaceUp .toggle()
         }
     }
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #Preview {
     ContentView()
