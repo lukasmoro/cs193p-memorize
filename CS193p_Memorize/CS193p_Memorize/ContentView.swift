@@ -12,8 +12,14 @@ struct ContentView: View {
     @State var cardCount = 3
     let emojis = ["🦋", "🪲", "🐝", "🐞", "🕷️", "🪰", "🐜", "🪳", "🦂"]
     
+    let insects = ["🦋", "🪲", "🐝", "🐞", "🕷️", "🪰", "🐜", "🪳", "🦂"]
+    let architecture = ["🏯", "⛩️", "🏛️", "🗼", "🏢", "🕌", "🏠", "🛖", "🛕"]
+    let food = ["🥑", "🥦", "🫐", "🥐", "🍖", "🥩", "🍰", "🫛", "🍉"]
+    
     var body: some View {
         VStack{
+            Text("MEMORIZE!")
+                .font(.headline)
             Spacer()
             cards
             Spacer()
@@ -36,6 +42,12 @@ struct ContentView: View {
         HStack{
             cardAdder
             Spacer()
+            HStack{
+                themeSwitcher
+                themeSwitcher
+                themeSwitcher
+            }
+            Spacer()
             cardRemover
         }
         .imageScale(.large)
@@ -53,6 +65,11 @@ struct ContentView: View {
     
     var cardAdder : some View {
         cardCountAdjuster(by: 1, symbol: "plus.circle")
+    }
+    
+    var themeSwitcher : some View {
+        Button(action: {}, label: {Image(systemName: "questionmark")})
+            .padding()
     }
 }
 
@@ -72,7 +89,6 @@ struct CardView: View {
             base.fill(Color.blue).opacity(isFaceUp ? 0 : 1)
         }
         .onTapGesture {
-            print("tapped")
             isFaceUp .toggle()
         }
     }
