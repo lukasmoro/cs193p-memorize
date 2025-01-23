@@ -16,10 +16,11 @@ struct EmojiMemorizeGameView: View {
     var body: some View {
         VStack{
             Spacer()
-            Text("MEMORIZE!").font(.headline)
-            Spacer()
+            Text("MEMORIZE").font(.headline)
+                .padding()
             ScrollView {
                 cards
+                    .animation(.default, value: viewModel.cards)
             }
             Button("Shuffle"){
                 viewModel.shuffle()
@@ -30,13 +31,14 @@ struct EmojiMemorizeGameView: View {
     
     //card grid view
     var cards : some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)],
-                  spacing: 0)  {
-            ForEach(viewModel.cards.indices, id: \.self){ index in
-                CardView(viewModel.cards[index])
-                    .aspectRatio(1/1, contentMode: .fit)
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0)  {
+            ForEach(viewModel.cards){ card in
+                CardView(card)
+                    .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
-                    .aspectRatio(1, contentMode: .fit)
+                    .onTapGesture {
+                        viewModel.choose(card)
+                    }
             }
         }
     }
@@ -52,7 +54,7 @@ struct EmojiMemorizeGameView: View {
         // main/body view
         var body: some View {
             ZStack  {
-                let base = RoundedRectangle(cornerRadius: 30)
+                let base = RoundedRectangle(cornerRadius: 20)
                 Group {
                     base.fill(Color.gray)
                     Text(card.content).font(.system(size:60))
@@ -62,6 +64,7 @@ struct EmojiMemorizeGameView: View {
                 base.fill(Color.blue)
                     .opacity(card.isFaceUp ? 0 : 1)
             }
+            .opacity(card.isFaceUp || !card.isMatched ? 1:0)
         }
     }
 }
