@@ -10,6 +10,8 @@ import Foundation
 struct MemorizeGame<CardContent> where CardContent: Equatable {
     
     private(set) var cards: Array<Card>
+    private(set) var score = 0
+    private var seenCards: Set<String> = []
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
         cards = []
@@ -32,16 +34,31 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
             if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
                 if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
+                    if seenCards.contains(cards[chosenIndex].id){
+                        score -= 1
+                    }
+                    if seenCards.contains(cards[potentialMatchIndex].id){
+                        score -= 1
+                    }
+                    
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
+                        score += 2
                     }
+                    seenCards.insert(cards[chosenIndex].id)
+                    seenCards.insert(cards[potentialMatchIndex].id)
                 } else {
                     indexOfTheOneAndOnlyFaceUpCard = chosenIndex
                 }
                 cards[chosenIndex].isFaceUp = true
             }
         }
+    }
+    
+    mutating func reset() {
+        score = 0
+        seenCards.removeAll()
     }
     
     mutating func shuffle() {

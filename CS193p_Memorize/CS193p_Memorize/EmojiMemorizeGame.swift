@@ -79,6 +79,10 @@ class EmojiMemorizeGame: ObservableObject {
         return model.cards
     }
     
+    var score: Int {
+        model.score
+    }
+    
     // MARK: - Intents
     
     func shuffle() {

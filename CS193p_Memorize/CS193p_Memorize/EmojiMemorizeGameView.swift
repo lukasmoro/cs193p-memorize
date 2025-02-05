@@ -17,10 +17,7 @@ struct EmojiMemorizeGameView: View {
         VStack{
             Spacer()
             VStack{
-                Text("MEMORIZE").font(.headline)
-                .padding()
-                
-                Text(viewModel.currentThemeName).font(.callout)
+                Text("Memorize: \(viewModel.currentThemeName)").font(.headline)
                 .padding()
             }
             
@@ -29,6 +26,8 @@ struct EmojiMemorizeGameView: View {
                     .animation(.default, value: viewModel.cards)
             }
             HStack {
+                Text("Score: \(viewModel.score)")
+                Spacer()
                 Button("Reset"){
                     viewModel.reset()
                 }
@@ -45,6 +44,7 @@ struct EmojiMemorizeGameView: View {
                 .foregroundColor(.white)
                 .cornerRadius(10)
             }
+            .padding()
         }
     }
     
@@ -83,6 +83,7 @@ struct EmojiMemorizeGameView: View {
                 }
                 .opacity(card.isFaceUp ? 1 : 0)
                 base.fill(themeColor)
+                    .stroke(Color.white, lineWidth: 2)
                     .opacity(card.isFaceUp ? 0 : 1)
             }
             .opacity(card.isFaceUp || !card.isMatched ? 1:0)
