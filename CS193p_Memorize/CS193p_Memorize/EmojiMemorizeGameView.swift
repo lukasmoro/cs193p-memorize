@@ -22,10 +22,23 @@ struct EmojiMemorizeGameView: View {
                 cards
                     .animation(.default, value: viewModel.cards)
             }
-            Button("Shuffle"){
-                viewModel.shuffle()
+            HStack {
+                Button("Reset"){
+                    viewModel.reset()
+                }
+                .padding()
+                .background(Color.purple)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                
+                Button("Shuffle"){
+                    viewModel.shuffle()
+                }
+                .padding()
+                .background(Color.yellow)
+                .foregroundColor(.white)
+                .cornerRadius(10)
             }
-            .padding()
         }
     }
     
