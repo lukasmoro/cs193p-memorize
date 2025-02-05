@@ -16,8 +16,14 @@ struct EmojiMemorizeGameView: View {
     var body: some View {
         VStack{
             Spacer()
-            Text("MEMORIZE").font(.headline)
+            VStack{
+                Text("MEMORIZE").font(.headline)
                 .padding()
+                
+                Text(viewModel.currentThemeName).font(.callout)
+                .padding()
+            }
+            
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
@@ -46,7 +52,7 @@ struct EmojiMemorizeGameView: View {
     var cards : some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0)  {
             ForEach(viewModel.cards){ card in
-                CardView(card)
+                CardView(card, themeColor: viewModel.themeColor)
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
                     .onTapGesture {
@@ -59,9 +65,11 @@ struct EmojiMemorizeGameView: View {
     struct CardView: View {
         
         let card: MemorizeGame<String>.Card
+        let themeColor: Color
         
-        init(_ card: MemorizeGame<String>.Card) {
+        init(_ card: MemorizeGame<String>.Card, themeColor: Color) {
             self.card = card
+            self.themeColor = themeColor
         }
         
         // main/body view
@@ -74,7 +82,7 @@ struct EmojiMemorizeGameView: View {
                         .minimumScaleFactor(0.01)
                 }
                 .opacity(card.isFaceUp ? 1 : 0)
-                base.fill(Color.blue)
+                base.fill(themeColor)
                     .opacity(card.isFaceUp ? 0 : 1)
             }
             .opacity(card.isFaceUp || !card.isMatched ? 1:0)
