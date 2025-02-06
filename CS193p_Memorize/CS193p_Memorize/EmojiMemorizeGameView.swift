@@ -46,6 +46,7 @@ struct EmojiMemorizeGameView: View {
             }
             .padding()
         }
+        .padding()
     }
     
     //card grid view
