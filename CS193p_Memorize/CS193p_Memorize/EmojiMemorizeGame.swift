@@ -37,7 +37,7 @@ class EmojiMemorizeGame: ObservableObject {
         Theme(
             name: "Colors",
             emojis: ["🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "⬛️", "⬜️", "🟫"],
-            numberOfPairs: 9,
+            numberOfPairs: 7,
             color: .orange
         ),
         Theme(
