@@ -22,7 +22,7 @@ struct EmojiMemorizeGameView: View {
         VStack{
             Spacer()
             VStack{
-                Text("Memorize: \(viewModel.currentThemeName)").font(.headline)
+                Text("Memorize: \(viewModel.currentThemeName)").font(.title3)
                 .padding()
             }
             
