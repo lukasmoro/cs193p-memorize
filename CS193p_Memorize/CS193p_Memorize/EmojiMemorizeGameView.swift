@@ -9,6 +9,8 @@ import SwiftUI
 
 struct EmojiMemorizeGameView: View {
     
+    typealias Card = MemorizeGame<String>.Card
+    
     //view model pointer
     @ObservedObject var viewModel: EmojiMemorizeGame
     
@@ -30,7 +32,6 @@ struct EmojiMemorizeGameView: View {
                 reset
                 shuffle
             }
-            .padding()
         }
         .padding()
     }
@@ -42,12 +43,14 @@ struct EmojiMemorizeGameView: View {
             Spacer()
             Text("Memorize")
                 .font(.title3.weight(.semibold))
+                .foregroundStyle(.pink)
         }
         .padding()
     }
     
     private var score : some View {
         Text("Score: \(viewModel.score)")
+            .animation(nil)
     }
     
     private var reset : some View {
@@ -77,13 +80,25 @@ struct EmojiMemorizeGameView: View {
         AspectVGrid( viewModel.cards, aspectRatio: aspectRatio){ card in
             return CardView(card, themeColor: viewModel.themeColor)
                 .padding(spacing)
+                .overlay(FlyingNumber(number: scoreChange(causedBy: card)))
                 .onTapGesture {
                     withAnimation {
+                        let scoreBeforeChoosing = viewModel.score
                         viewModel.choose(card)
+                        let scoreChange = viewModel.score - scoreBeforeChoosing
+                        print(scoreChange)
+                        lastScoreChange = (scoreChange, card.id)
                     }
                 }
             }
         }
+    
+    @State private var lastScoreChange = (0, causedByCardId: "")
+    
+    private func scoreChange (causedBy card: Card) -> Int {
+        let (amount, id) = lastScoreChange
+        return card.id == id ? amount : 0
+    }
     
 }
     
