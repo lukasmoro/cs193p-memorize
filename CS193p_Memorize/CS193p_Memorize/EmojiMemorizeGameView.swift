@@ -22,13 +22,18 @@ struct EmojiMemorizeGameView: View {
         VStack{
             Spacer()
             VStack{
-                Text("Memorize: \(viewModel.currentThemeName)").font(.title3)
-                .padding()
+                HStack{
+                    Text("\(viewModel.currentThemeName)")
+                        .font(.title3)
+                        .padding()
+                    Spacer()
+                    Text("Memorize")
+                        .font(.title3.weight(.semibold))
+                        .padding()
+                }
             }
-            
             VStack {
                 cards
-                    .animation(.default, value: viewModel.cards)
             }
             HStack {
                 Text("Score: \(viewModel.score)")
@@ -42,7 +47,9 @@ struct EmojiMemorizeGameView: View {
                 .cornerRadius(radius)
                 
                 Button("Shuffle"){
-                    viewModel.shuffle()
+                    withAnimation {
+                        viewModel.shuffle()
+                    }
                 }
                 .padding()
                 .background(Color.yellow)
@@ -60,7 +67,9 @@ struct EmojiMemorizeGameView: View {
             return CardView(card, themeColor: viewModel.themeColor)
                 .padding(spacing)
                 .onTapGesture {
-                    viewModel.choose(card)
+                    withAnimation {
+                        viewModel.choose(card)
+                    }
                 }
             }
         }

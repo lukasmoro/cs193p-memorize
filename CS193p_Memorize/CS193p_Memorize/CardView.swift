@@ -40,6 +40,8 @@ struct CardView: View {
                     .minimumScaleFactor(Constants.FontSize.scaleFactor)
                     .multilineTextAlignment(.center)
                     .padding(Constants.Pie.inset)
+                    .rotationEffect(.degrees(card.isMatched ? 360 : 0))
+                    .animation(.bouncy(duration: 0.5, extraBounce: 0.2), value: card.isMatched)
                 )
             .padding(Constants.inset)
             .modifier(Cardify(isFaceUp: card.isFaceUp, themeColor: themeColor))
