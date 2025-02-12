@@ -20,45 +20,56 @@ struct EmojiMemorizeGameView: View {
     // main/body view
     var body: some View {
         VStack{
-            Spacer()
-            VStack{
-                HStack{
-                    Text("\(viewModel.currentThemeName)")
-                        .font(.title3)
-                        .padding()
-                    Spacer()
-                    Text("Memorize")
-                        .font(.title3.weight(.semibold))
-                        .padding()
-                }
-            }
             VStack {
+                header
                 cards
             }
             HStack {
-                Text("Score: \(viewModel.score)")
+                score
                 Spacer()
-                Button("Reset"){
-                    viewModel.reset()
-                }
-                .padding()
-                .background(Color.purple)
-                .foregroundColor(.white)
-                .cornerRadius(radius)
-                
-                Button("Shuffle"){
-                    withAnimation {
-                        viewModel.shuffle()
-                    }
-                }
-                .padding()
-                .background(Color.yellow)
-                .foregroundColor(.white)
-                .cornerRadius(radius)
+                reset
+                shuffle
             }
             .padding()
         }
         .padding()
+    }
+    
+    private var header : some View {
+        HStack{
+            Text("\(viewModel.currentThemeName)")
+                .font(.title3)
+            Spacer()
+            Text("Memorize")
+                .font(.title3.weight(.semibold))
+        }
+        .padding()
+    }
+    
+    private var score : some View {
+        Text("Score: \(viewModel.score)")
+    }
+    
+    private var reset : some View {
+        Button("Reset"){
+            viewModel.reset()
+        }
+        .padding()
+        .background(Color.purple)
+        .foregroundColor(.white)
+        .cornerRadius(radius)
+    }
+    
+    private var shuffle : some View {
+        Button("Shuffle"){
+            withAnimation {
+                viewModel.shuffle()
+            }
+        }
+        .padding()
+        .background(Color.yellow)
+        .foregroundColor(.white)
+        .cornerRadius(radius)
     }
     
     //card grid view
