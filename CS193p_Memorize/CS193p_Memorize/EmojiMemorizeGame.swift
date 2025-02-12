@@ -8,22 +8,81 @@
 import SwiftUI
 
 class EmojiMemorizeGame: ObservableObject {
-    private static let emojis = ["🦋", "🪲", "🐝", "🐞", "🕷️", "🪰", "🐜", "🪳", "🦂"]
     
-    private static func createMemorizeGame() -> MemorizeGame<String>  {
-        return MemorizeGame(numberOfPairsOfCards: 8) { pairIndex in
-            if emojis.indices.contains(pairIndex) {
-                return emojis[pairIndex]
+    typealias Card = MemorizeGame<String>.Card
+    
+    private static let themes = [
+        Theme(
+            name: "Insects",
+            emojis: ["🦋", "🪲", "🐝", "🐞", "🕷️", "🪰", "🐜", "🪳", "🦂"],
+            numberOfPairs: 2,
+            color: .blue
+        ),
+        Theme(
+            name: "Architecture",
+            emojis: ["🕌", "🏢", "⛩️", "🛖", "🏛️", "🗼", "🛕", "🕋", "🏯"],
+            numberOfPairs: 2,
+            color: .yellow
+        ),
+        Theme(
+            name: "Animals",
+            emojis: ["🐊", "🐬", "🦓", "🦒", "🐡", "🦀", "🐂", "🦧", "🦣"],
+            numberOfPairs: 2,
+            color: .purple
+        ),
+        Theme(
+            name: "Symbols",
+            emojis: ["💟", "☮️", "🕉️", "✡️", "☯️", "🕎", "♋️", "♒️", "🪯"],
+            numberOfPairs: 2,
+            color: .green
+        ),
+        Theme(
+            name: "Colors",
+            emojis: ["🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "⬛️", "⬜️", "🟫"],
+            numberOfPairs: 2,
+            color: .orange
+        ),
+        Theme(
+            name: "Flags",
+            emojis: ["🇦🇫", "🇧🇾", "🇧🇷", "🇬🇷", "🇲🇪", "🇰🇳", "🇺🇾", "🇺🇸", "🇬🇧"],
+            numberOfPairs: 2,
+            color: .gray
+        )
+    ]
+        
+    @Published private var model: MemorizeGame<String>
+    @Published private var currentTheme: Theme
+    
+    init(){
+        let initialTheme = Self.themes.randomElement()!
+        self.currentTheme = initialTheme
+        self.model = Self.createMemorizeGame(theme: initialTheme)
+    }
+    
+    private static func createMemorizeGame(theme: Theme) -> MemorizeGame<String>  {
+        return MemorizeGame(numberOfPairsOfCards: theme.actualNumberOfPairs) { pairIndex in
+            if theme.emojis.indices.contains(pairIndex) {
+                return theme.emojis[pairIndex]
             } else {
                 return "😵"
             }
         }
     }
-        
-    @Published private var model =  createMemorizeGame()
     
-    var cards: Array<MemorizeGame<String>.Card> {
+    var currentThemeName: String {
+        currentTheme.name
+    }
+    
+    var themeColor: Color {
+        currentTheme.color
+    }
+    
+    var cards: Array<Card> {
         return model.cards
+    }
+    
+    var score: Int {
+        model.score
     }
     
     // MARK: - Intents
@@ -32,7 +91,13 @@ class EmojiMemorizeGame: ObservableObject {
         model.shuffle()
     }
     
-    func choose(_ card: MemorizeGame<String>.Card) {
+    func choose(_ card: Card) {
         model.choose(card)
+    }
+    
+    func reset() {
+        currentTheme = Self.themes.randomElement()!
+        model = Self.createMemorizeGame(theme: currentTheme)
+        shuffle()
     }
 }
