@@ -26,6 +26,10 @@ struct CardView: View {
             static let smallest: CGFloat = 10
             static let scaleFactor = smallest / largest
         }
+        struct Pie {
+            static let opacity: CGFloat = 1.0
+            static let inset: CGFloat = 1
+        }
     }
     
     // main/body view
@@ -34,10 +38,15 @@ struct CardView: View {
             let base = RoundedRectangle(cornerRadius: Constants.cornerRadius)
             Group {
                 base.fill(Color.gray)
-                Text(card.content)
-                    .font(.system(size: Constants.FontSize.largest))
-                    .minimumScaleFactor(Constants.FontSize.scaleFactor)
-                    .multilineTextAlignment(.center)
+                Pie(endAngle: .degrees(240))
+                    .opacity(Constants.Pie.opacity)
+                    .overlay(
+                        Text(card.content)
+                            .font(.system(size: Constants.FontSize.largest))
+                            .minimumScaleFactor(Constants.FontSize.scaleFactor)
+                            .multilineTextAlignment(.center)
+                            .padding(Constants.Pie.inset)
+                        )
                     .padding(Constants.inset)
             }
             .opacity(card.isFaceUp ? 1 : 0)

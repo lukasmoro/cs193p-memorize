@@ -15,37 +15,37 @@ class EmojiMemorizeGame: ObservableObject {
         Theme(
             name: "Insects",
             emojis: ["🦋", "🪲", "🐝", "🐞", "🕷️", "🪰", "🐜", "🪳", "🦂"],
-            numberOfPairs: 8,
+            numberOfPairs: 2,
             color: .blue
         ),
         Theme(
             name: "Architecture",
             emojis: ["🕌", "🏢", "⛩️", "🛖", "🏛️", "🗼", "🛕", "🕋", "🏯"],
-            numberOfPairs: 6,
+            numberOfPairs: 2,
             color: .yellow
         ),
         Theme(
             name: "Animals",
             emojis: ["🐊", "🐬", "🦓", "🦒", "🐡", "🦀", "🐂", "🦧", "🦣"],
-            numberOfPairs: 7,
+            numberOfPairs: 2,
             color: .purple
         ),
         Theme(
             name: "Symbols",
             emojis: ["💟", "☮️", "🕉️", "✡️", "☯️", "🕎", "♋️", "♒️", "🪯"],
-            numberOfPairs: 5,
+            numberOfPairs: 2,
             color: .green
         ),
         Theme(
             name: "Colors",
             emojis: ["🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "⬛️", "⬜️", "🟫"],
-            numberOfPairs: 7,
+            numberOfPairs: 2,
             color: .orange
         ),
         Theme(
             name: "Flags",
             emojis: ["🇦🇫", "🇧🇾", "🇧🇷", "🇬🇷", "🇲🇪", "🇰🇳", "🇺🇾", "🇺🇸", "🇬🇧"],
-            numberOfPairs: 6,
+            numberOfPairs: 2,
             color: .gray
         )
     ]
