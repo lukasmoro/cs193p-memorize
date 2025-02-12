@@ -12,7 +12,10 @@ struct EmojiMemorizeGameView: View {
     //view model pointer
     @ObservedObject var viewModel: EmojiMemorizeGame
     
+    //constants
     private let aspectRatio: CGFloat = 2/3
+    private let spacing: CGFloat = 4
+    private let radius: CGFloat = 10
     
     // main/body view
     var body: some View {
@@ -36,7 +39,7 @@ struct EmojiMemorizeGameView: View {
                 .padding()
                 .background(Color.purple)
                 .foregroundColor(.white)
-                .cornerRadius(10)
+                .cornerRadius(radius)
                 
                 Button("Shuffle"){
                     viewModel.shuffle()
@@ -44,7 +47,7 @@ struct EmojiMemorizeGameView: View {
                 .padding()
                 .background(Color.yellow)
                 .foregroundColor(.white)
-                .cornerRadius(10)
+                .cornerRadius(radius)
             }
             .padding()
         }
@@ -55,40 +58,13 @@ struct EmojiMemorizeGameView: View {
     private var cards : some View {
         AspectVGrid( viewModel.cards, aspectRatio: aspectRatio){ card in
             return CardView(card, themeColor: viewModel.themeColor)
-                .padding(4)
+                .padding(spacing)
                 .onTapGesture {
                     viewModel.choose(card)
                 }
             }
         }
     
-    struct CardView: View {
-        
-        let card: MemorizeGame<String>.Card
-        let themeColor: Color
-        
-        init(_ card: MemorizeGame<String>.Card, themeColor: Color) {
-            self.card = card
-            self.themeColor = themeColor
-        }
-        
-        // main/body view
-        var body: some View {
-            ZStack  {
-                let base = RoundedRectangle(cornerRadius: 20)
-                Group {
-                    base.fill(Color.gray)
-                    Text(card.content).font(.system(size:60))
-                        .minimumScaleFactor(0.01)
-                }
-                .opacity(card.isFaceUp ? 1 : 0)
-                base.fill(themeColor)
-                    .stroke(Color.white, lineWidth: 2)
-                    .opacity(card.isFaceUp ? 0 : 1)
-            }
-            .opacity(card.isFaceUp || !card.isMatched ? 1:0)
-        }
-    }
 }
     
 struct EmojiMemorizeGameView_Previews: PreviewProvider {
